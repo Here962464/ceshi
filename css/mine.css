@@ -1,0 +1,178 @@
+[v-cloak] {
+	        display: none !important;
+	    }
+body{
+	background: rgb(246,248,249);
+}
+.personal{
+	background: #fff;
+	padding: 10px 40px;
+	width: 50%;
+	height: auto;
+	overflow: hidden;
+	margin: 50px auto;
+	border: 1px solid #eee;
+	border-radius: 6px;
+	box-shadow: 1px 1px 4px 2px #eee;
+	position: relative;
+	overflow-x: hidden;
+}
+.title{
+	width: 54%;
+	overflow: hidden;
+	margin: 50px auto;
+	font-size: 28px;
+	color: rgb(53,53,53);
+}
+.baseInfo{
+	padding: 10px 0;
+	display: flex;
+	border-bottom: 1px solid #eee;
+}
+.avatar{
+	width: 10%;
+	height: 10%;
+	padding: 20px;
+}
+.about{
+	width: 80%;
+	overflow-x: hidden;
+	margin-left: 20px;
+}
+.about li{
+	padding: 10px 0;
+	line-height: 20px;
+	list-style: none;
+}
+.about li.nickName{
+	font-size: 20px;
+}
+.about li.info{
+	font-size: 14px;
+	color: #aaa;
+	padding-left: 15px;
+}
+.praise{
+	padding: 20px 10px;
+	color: rgb(53,53,53);
+	font-size: 14px;
+}
+i.praiseIcon{
+	font-size: 20px;
+	color: #aaa;
+}
+.gotPraise{
+	padding: 10px;
+}
+.gotPraise li{
+	float: left;
+	border-right: 1px solid #eee;
+	padding: 5px 20px;
+}
+li.noBorder{
+	border: none;
+}
+.prasiseName{
+	margin-right: 20px;
+	color: #aaa;
+}
+/*文章*/
+/*帖子列表*/
+.contentList{
+	background: #fff;
+	padding: 10px 40px;
+	width: 50%;
+	margin: 10px auto;
+	border: 1px solid #eee;
+	border-radius: 6px;
+	box-shadow: 1px 1px 4px 2px #eee;
+	position: relative;
+}
+.listHead{
+	width: 100%;
+	border-bottom: 1px solid #eee;
+	padding: 60px 0 0 0;
+	font-size: 28px;
+}
+.write{
+	font-size: 16px;
+	cursor: pointer;
+	border: 1px solid #67c23a;
+	border-radius: 6px;
+	text-align: center;
+	padding: 10px 20px;
+	color: #67c23a;
+	display: flex;
+	align-items: center;
+}
+.write i{
+	font-size: 22px;
+	color: #67c23a;
+	margin-right: 5px;
+}
+.write:hover{
+	color: rgb(23,137,57);
+	border: 1px solid rgb(23,137,57);
+}
+.write:hover i{
+	color: rgb(23,137,57);
+}
+.listClassify{
+	font-size: 18px;
+	padding: 10px 0 0 0;
+	width: 100%;
+	height: 40px;
+	clear: both;
+	overflow: hidden;
+}
+.listClassify li{
+	cursor: pointer;
+	padding: 10px 20px;
+}
+.listClassify li.hasBase{
+	padding: 0;
+	text-align: center;
+	color: #aaa;
+}
+.listClassify li:hover{
+	border-bottom: 2px solid #aaa;
+}
+.listClassify li.selected{
+	color: #67c23a;
+	border-bottom: 2px solid #67c23a;
+}
+.lists{
+	overflow-y: hidden;
+}
+.lists_active{
+	display: block;
+}
+.list-item{
+	width: 100%;
+	padding: 20px 0;
+	border-bottom: 1px solid #eee;
+}
+.item-title{
+	margin: 20px 0;
+	font-size: 18px;
+}
+.detail-info{
+	margin: 20px 0 0 0;
+	font-size: 14px;
+}
+.detail-info i{
+	font-size: 18px;
+	margin-right: 5px;
+	color: #aaa;
+}
+.nickName,.time{
+	margin-right: 20px;
+}
+.view,.conmment,.edit,.delete{
+	margin-left: 20px;
+	cursor: pointer;
+}
+.detail-info .onxamine,.detail-info .examineerr{
+	margin-left: 20px;
+	color: rgb(247,150,104);
+}

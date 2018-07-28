@@ -1,0 +1,114 @@
+
+body{
+	background: rgb(246,248,249);
+}
+.article{
+	background: #fff;
+	padding: 10px 40px;
+	width: 50%;
+	height: auto;
+	margin: 50px auto;
+	border: 1px solid #eee;
+	border-radius: 6px;
+	box-shadow: 1px 1px 4px 2px rgb(241,243,245);
+}
+.article ul li{
+	padding: 20px 10px;
+	overflow-x: hidden;
+}
+li.title{
+	margin-top: 40px;
+	position: relative;
+}
+li.title>div{
+	display: inline-block;
+	position: relative;
+}
+.title input{
+	outline: none;
+	border:1px solid #ccc; 
+	border-radius: 4px;
+	width: 500px;
+	padding: 7px 40px 7px 10px;
+	margin-left: 10px;
+	color: rgb(53,53,53);
+	font-size: 14px;
+}
+.limit{
+	color: #ccc;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+.labelList{
+	margin-left: 80px;
+	margin-top: -25px;
+}
+.layui-layedit{
+	height: auto;
+	border-radius: 4px;
+	border-color: #ccc;
+	margin-left: 90px;
+	margin-top: -15px;
+}
+.layui-layedit img{
+	display: inline-block;
+	width: 400px;
+	height: 300px;
+}
+/*label*/
+.labelList .addLabel{
+	display: inline-block;
+	padding: 10px 20px;
+	background: #eee;
+	text-align: center;
+	border-radius: 4px;
+	color: rgb(53,53,53);
+	cursor: pointer;
+}
+.submit{
+	text-align: center;
+	
+}
+.submit button{
+	width: 100px;
+	outline: none;
+	border: 1px solid #67c23a;
+	padding: 6px 10px;
+	cursor: pointer;
+	color: #fff;
+	background: #67c23a;
+	border-radius: 4px;
+}
+.submit button:active{
+	border: 1px solid #228B22;
+	background: #228B22;
+}
+div.classifyBox{
+	width: 100%;
+	height: auto;
+	margin-left: 90px;
+	margin-top: -25px;
+}
+div.classifyBox select{
+	padding: 6px 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+	cursor: pointer; 
+	background:none; 
+	color: rgb(53,53,53);
+}
+/*IE*/
+.classify div.classifyBox option::-ms-expand{ display: none; }
+.classify div.classifyBox select>option{
+    cursor: pointer;
+    background: #fff;
+    border: 1px solied #eee;
+}
+/* --背景色字体颜色--*/
+.classify div.classifyBox option:hover{
+    color:#ccc;
+    background: red;
+    border: 1px solied #eee;
+}

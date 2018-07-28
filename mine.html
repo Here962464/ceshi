@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title id="companyName">七蚁科技</title>
+    <!-- 网页icon -->
+	<link rel="icon" type="image/x-icon" href="images/logo.png" />
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="css/mine.css">
+	<style type="text/css">
+		[v-cloak] {
+	        display: none !important;
+	    }
+	</style>
+</head>
+<body>
+	<!-- head on -->
+	<div id="header">
+		
+	</div>
+	<p class="title">个人主页</p>
+	<div class="personal" id="personal">
+		<div class="baseInfo">
+			<img :src="avatar" class="avatar">
+			<ul v-cloak class="about">
+				<li v-cloak class="nickName">{{nickName}}</li>
+				<li v-cloak class="info">{{info}}</li>
+			</ul>
+		</div>
+		<div v-cloak class="praise">
+			<i v-cloak class="iconfont icon-zan praiseIcon"></i> 获得过{{parse}}次赞
+			<ul class="gotPraise">
+				<li v-cloak><span class="prasiseName">积分</span> {{integral}} </li>
+				<li v-cloak><span class="prasiseName">余额</span> {{balance}} </li>
+			</ul>
+		</div>
+	</div>
+	<!-- contentList on -->
+	<div id="writeNewArticle">
+		<p v-cloak class="title">
+			我的帖子
+			<a class="write fr" @click="jumpTo"><i class="iconfont icon-xiao47"></i>发表新帖</a>
+		</p>
+	</div>
+	<div class="contentList" id="contentList">
+		<div>
+			<ul class="lists">
+				<li v-cloak class="list-item rgb53" v-for='item in infoList'>
+					<a v-cloak v-bind:href="toUrl+'?id='+item.id">
+						<span class="item-title">{{item.title}}</span>
+						<div class="detail-info">
+							<!-- <span class="className fl rgb154">{{value.className}}</span> -->
+							<span class="nickName fl rgb154">{{item.user_name}}</span>
+							<span class="time fl rgb154">{{item.create_time}}</span>
+							<span v-if="item.OnExamine" class="onxamine fl rgb154">{{OnExamine}}</span>
+							<span v-if="item.ExamineErr" class="examineerr fl rgb154">{{ExamineErr}}</span>
+							<a v-bind:href="editUrl+'?id='+item.id" target="_blank"><span class="edit fr rgb154"><i class="iconfont icon-icon-edit"></i>编辑</span></a>
+							<span class="view fr rgb154"><i class="iconfont icon-kanguos"></i>{{item.view_count}}</span>
+							<span class="conmment fr rgb154"><i class="iconfont icon-pinglun"></i>{{item.comment_count}}</span>
+							<span @click="deleteArticle(item.id)" class="delete fr rgb154"><i class="iconfont icon-shanchu"></i>删除</span>
+						</div>
+					</a>
+				</li>
+				<li v-if="hasBase" class="baseLine">----------------------------我是底线--------------------------------</li>
+			</ul>
+		</div>
+	</div>
+	<!-- contentList off -->
+	<!-- footer on -->
+	<div id="footer"></div>
+	<!-- footer off -->
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="font/iconfont.js"></script>
+	<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="layui/layui.all.js"></script>
+	<script type="text/javascript" src="layui/layui.js"></script>
+	<script type="text/javascript" src="js/mine.js"></script>
+    <script type="text/javascript" src="js/watchLogIn.js"></script>
+	<script>
+        $(function() {
+            $('#header').load('header.html');
+            $('#footer').load('footer.html');
+        })
+    </script>
+</body>
+</html>

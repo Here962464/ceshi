@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title id="companyName">七蚁科技</title>
+    <!-- 网页icon -->
+	<link rel="icon" type="image/x-icon" href="images/logo.png" />
+	<link rel="stylesheet" type="text/css" href="css/mine.css">
+</head>
+<body>
+	<!-- head on -->
+	<div id="header">
+		
+	</div>
+	<p class="title">个人主页</p>
+	<div class="personal" id="personal">
+		<div class="baseInfo">
+			<img :src="avatar" class="avatar">
+			<ul class="about">
+				<li class="nickName">{{nickName}}</li>
+				<li class="info">{{info}}</li>
+			</ul>
+			
+		</div>
+		<div class="praise">
+			<i class="iconfont icon-zan praiseIcon"></i> 获得过{{parse}}次赞
+			<ul class="gotPraise">
+				<li><span class="prasiseName">积分</span> {{integral}} </li>
+				<li><span class="prasiseName">余额</span> {{balance}} </li>
+			</ul>
+		</div>
+	</div>
+	<!-- footer on -->
+	<div id="footer"></div>
+	<!-- footer off -->
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="font/iconfont.js"></script>
+	<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/watchLogIn.js"></script>
+    <script type="text/javascript" src="js/mine.js"></script>
+	<script>
+        $(function() {
+            $('#header').load('header.html');
+            $('#footer').load('footer.html');
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title id="title">{{title}}</title>
+    <!-- 网页icon -->
+	<link rel="icon" type="image/x-icon" href="images/logo.png" />
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="css/posting.css">
+	<style type="text/css">
+		 [v-cloak] {
+	        display: none !important;
+	    }
+	</style>
+</head>
+<body>
+	<!-- footer on -->
+	<div id="header"></div>
+	<!-- footer off -->
+	<div id="app">
+		<div class="app">
+			<div v-cloak class="articleTitle">
+				<h4>{{title}}</h4>
+				<div class="baseInfo">
+					<span>{{user_name}}</span>
+					<span class="createTime">{{create_time}}</span>
+					<span class="viewCount">
+						<i class="iconfont icon-kanguos"></i>
+						{{view_count}}
+					</span>
+				</div>
+			</div>
+			<div class="content">
+				<div class="articleContent" v-html="articleContent"></div>
+				<div v-cloak class="comment_amount" @click="showCommentBox">
+					<i class="iconfont icon-pinglun"></i>
+					评论 {{comment_count}}
+				</div>
+				<div class="commentBox" v-show="showComment">
+					<div class="comment">
+						<div v-cloak class="personal">
+							<img class="avatar" :src="avatar">
+							<span class="nickName">{{myName}}</span>
+						</div>
+						<!-- 加载编辑器的容器 -->
+						<textarea id="text" style="display: none;"></textarea>
+						
+					</div>
+					<div class="submit">
+						<button class="submitComment">发表评论</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="commentByOther">
+			<h3 v-cloak>{{comment_count}}条评论</h3>
+		</div>
+	</div>
+	<!-- footer on -->
+	<div id="footer"></div>
+	<!-- footer off -->
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="js/jqurey.params.js"></script>
+    <script type="text/javascript" src="layui/layui.js"></script>
+	<script type="text/javascript" src="js/posting.js"></script>
+    <script type="text/javascript" src="js/watchLogIn.js"></script>
+	<script>
+        
+        function getCookie(c_name){
+			if (document.cookie.length>0){
+				c_start=document.cookie.indexOf(c_name + "=")
+				if (c_start!=-1){ 
+				    c_start=c_start + c_name.length+1 
+				    c_end=document.cookie.indexOf(";",c_start)
+				    if (c_end==-1) c_end=document.cookie.length
+				    return unescape(document.cookie.substring(c_start,c_end))
+				} 
+			}
+			return ""
+		}
+        // 获取session数据
+		// 用户名
+		var userName = getCookie('userName');
+		//uId
+		var uId = getCookie('uId');
+		// sessionId
+		var id = getCookie('sessionId');
+		// 服务器地址
+		var url = getCookie('url');
+        // 要提交的评论数据
+    	var dataInfo = {
+    		posts_id: $.query.get('id'),
+	        // label:[],
+	        user_id:uId,
+	        user_name:userName,
+	        content:"",
+	        pid:0
+    	};
+		layui.use(['layedit','jquery'], function(){
+		 	var layedit = layui.layedit;
+		 	layedit.set({
+			  uploadImage: {
+			    url: url+'&do=api_file&op=upload&state=we7sid-'+id, //接口url
+			    type: 'POST' //默认post
+			  }
+			});
+		  	// layedit.build('text'); //建立编辑器
+		  	var index = layedit.build('text');
+		  	$('.submitComment').on('click',function(){
+		  		dataInfo.content = layedit.getContent(index);
+		  		console.log(dataInfo);
+		  		if(dataInfo.content != ""){
+		  			$.ajax({
+			        	url: url+'&do=api_posts&op=reply&state=we7sid-'+id,
+			        	type: 'POST',
+			        	dataType: 'json',
+			        	data: dataInfo,
+			    	}).done(function(data) {
+			        	console.log(data);
+			        	if(data.code == 0){
+			        		layer.open({
+			        		  type: 0,
+							  title: '提示信息',
+							  content: '评论成功！',
+							  yes: function(index, layero){
+							    window.location.reload()
+							  }
+							});
+							 
+			        	}else{
+			        		layer.open({
+			        		  type: 0,
+							  title: '提示信息'
+							  ,content: data.msg
+							});
+			        	}
+			        }).fail(function(err) {
+			        	console.log(err);
+			        }).always(function() {
+			        	console.log("complete");
+			        });
+		  		}else{
+		  			layer.open({
+	        		  type: 0,
+					  title: '提示信息'
+					  ,content: "评论内容不能为空！"
+					});
+		  		}
+		  		
+		  	})
+		});
+    </script>
+    <script type="text/javascript">
+    	$(function() {
+            $('#header').load('header.html');
+            $('#footer').load('footer.html');
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>七蚁科技</title>
+    <!-- 网页icon -->
+	<link rel="icon" type="image/x-icon" href="images/logo.png" />
+	<link rel="stylesheet" type="text/css" href="css/articleDetail.css">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<style>
+	/*element样式*/
+	  .el-tag + .el-tag {
+	    margin-left: 10px;
+	    margin-top: 0;
+	    margin-bottom: 10px;
+	  }
+	  .labelList .el-tag i,.labelList .el-tag i{
+		color: rgb(53,53,53);
+	  }
+	  .labelList .el-tag i:hover,.labelList .el-tag i:hover{
+	  	background: #aaa;
+	  	color:#fff;
+	  }
+	  .button-new-tag {
+	    margin-left: 10px;
+	    height: 32px;
+	    line-height: 30px;
+	    padding-top: 0;
+	    padding-bottom: 0;
+	    border: 1px solid #ccc;
+	  }
+	  .button-new-tag:hover{
+	  	background: #ccc;
+	  	border: 1px solid #ccc;
+	  }
+	  .input-new-tag {
+	    width: 90px;
+	    margin-left: 10px;
+	    vertical-align: bottom;
+	  }
+	  .content #text{
+	  	margin-top: -40px;
+	  }
+	  [v-cloak] {
+        display: none !important;
+    }
+	</style>
+</head>
+
+<body>
+
+	<div id="header"></div>
+	<div class="article " id="article">
+		<ul>
+			<li v-cloak class="title">
+				文章标题：<div><input autofocus="true" id="title" v-model="items.text" ref="count" type="text" name="title" @blur="getTitle" v-bind:placeholder="palceHolder" maxlength="30" ><span class="limit" v-html="number">{{number}}</span></div>
+			</li>
+			<li class="label">
+				文章标签	:
+				<div class="labelList">
+					<el-tag
+					  :key="tag"
+					  v-for="tag in dynamicTags"
+					  closable
+					  :disable-transitions="false"
+					  @close="handleClose(tag)"
+					  style="color:rgb(53,53,53);background: #eee;border: 1px solid #eee"
+					  >
+					  {{tag}}
+					</el-tag>
+					<el-input
+					  class="input-new-tag"
+					  v-if="inputVisible"
+					  v-model="inputValue"
+					  ref="saveTagInput"
+					  size="small"
+					  @keyup.enter.native="handleInputConfirm"
+					  @blur="handleInputConfirm"
+					  ref="label"
+					>
+					</el-input>
+					<el-button v-else class="button-new-tag" size="small" @click="showInput">自定义标签+</el-button>
+				</div>
+			</li>
+			<li class="classify">
+				文章分类：<div class="classifyBox">
+							<select>
+								
+							</select>
+							<!-- <button>选择分类</button>
+							<button>新建子集</button> -->
+						</div>
+			</li>
+			<li class="content">
+				文章内容：
+				<!-- 加载编辑器的容器 -->
+				<textarea v-cloak id="text" style="display: none;">{{content}}</textarea>
+			</li>
+			<li v-cloak class="submit">
+				<button id="getContent">发表文章</button>
+			</li>
+		</ul>
+	</div>
+    <div id='footer'></div>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/jqurey.params.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
+    <script type="text/javascript" src="layui/layui.js"></script>
+    <script type="text/javascript" src="js/watchLogIn.js"></script>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+    	function getCookie(c_name){
+			if (document.cookie.length>0){
+				c_start=document.cookie.indexOf(c_name + "=")
+				if (c_start!=-1){ 
+				    c_start=c_start + c_name.length+1 
+				    c_end=document.cookie.indexOf(";",c_start)
+				    if (c_end==-1) c_end=document.cookie.length
+				    return unescape(document.cookie.substring(c_start,c_end))
+				} 
+			}
+			return ""
+		}
+    	// 获取session数据
+		// 用户名
+		var userName = getCookie('userName');
+		//头像
+		var avatar = getCookie('avatar');
+		// sessionId
+		var id = getCookie('sessionId');
+		// 服务器地址
+		var strongUrl = getCookie('url');
+		// uId
+		var uId = getCookie('uId');
+    	var postId = $.query.get('id');
+    	// 要提交的数据
+    	var dataInfo = {
+    		title:"",
+	        // label:[],
+	        content:"",
+	        parent_class_id:0,
+	        class_id:1,
+	        user_id: uId,
+	        user_name:userName
+    	};
+		console.log(postId);
+		layui.use(['layedit','jquery'], function(){
+		 	var layedit = layui.layedit;
+		 	layedit.set({
+			  uploadImage: {
+			    url: strongUrl+'&do=api_file&op=upload&state=we7sid-'+id, //接口url
+			    type: 'POST' //默认post
+			  }
+			});
+		  	// layedit.build('text'); //建立编辑器
+		  	var index = layedit.build('text',{
+		  		height:400
+		  	});
+		  	$('.beauty_img_text img').css({'width':'100%','height':'auto','visibility':'inherit'});
+		  	$('#getContent').on('click',function(){
+		  		dataInfo.content = layedit.getContent(index);
+		  		console.log(dataInfo);
+		  		if(userName == ""){
+		  			login.$data.showMask = true;
+		  		}else{
+		  			// 判断文章标题和内容是否为空,并且是发表文章不是编辑文章
+			  		if(dataInfo.title !="" && dataInfo.content != "" && postId == ""){
+			  			$.ajax({
+				        	url: strongUrl+'&do=api_posts&op=release&state=we7sid-'+id,
+				        	type: 'POST',
+				        	dataType: 'json',
+				        	data: dataInfo,
+				    	}).done(function(data) {
+				        	console.log(data);
+				        	if(data.code == 0){
+				        		layer.open({
+				        		  type: 0,
+								  title: '提示信息',
+								  content: '发表成功！',
+								  yes: function(index, layero){
+								  	console.log(data.posts_id)
+								    window.location.href='postings.html?id='+data.posts_id;
+								  }
+								});
+								 
+				        	}else{
+				        		layer.open({
+				        		  type: 0,
+								  title: '提示信息'
+								  ,content: data.msg
+								});
+				        	}
+				        }).fail(function(err) {
+				        	console.log(err);
+				        }).always(function() {
+				        	console.log("complete");
+				        });
+			  		}else if(dataInfo.title !="" && dataInfo.content != "" && postId != ""){
+			  			console.log(dataInfo)
+			  			console.log(postId)
+			  			dataInfo['posts_id'] = postId;
+			  			// 编辑文章
+			  			$.ajax({
+				        	url: strongUrl+'&do=api_posts&op=edit&state=we7sid-'+id,
+				        	type: 'POST',
+				        	dataType: 'json',
+				        	data: dataInfo,
+				    	}).done(function(data) {
+				        	console.log(data);
+				        	if(data.code == 0){
+				        		layer.open({
+				        		  type: 0,
+								  title: '提示信息',
+								  content: '修改成功！',
+								  yes: function(index, layero){
+								  	var tempUrl  = "postings.html?id=" +postId;
+								    window.location.href=tempUrl;
+								  }
+								});
+								 
+				        	}else{
+				        		layer.open({
+				        		  type: 0,
+								  title: '提示信息'
+								  ,content: data.msg
+								});
+				        	}
+				        }).fail(function(err) {
+				        	console.log(err);
+				        }).always(function() {
+				        	console.log("complete");
+				        });
+			  		}else{
+			  			layer.open({
+		        		  type: 0,
+						  title: '提示信息'
+						  ,content: "请确认标题和内容不为空！"
+						});
+			  		}
+		  		}
+		  		
+		  		
+		  	})
+		});
+        var app = new Vue({
+        	el:"#article",
+        	data() {
+		      return {
+		      	number: '30',
+                items: {
+                    text:''
+                },
+		      	limit:0,
+		        dynamicTags: [],
+		        inputVisible: false,
+		        inputValue: '',
+		        palceHolder:"请输入文章标题",
+		        content:""
+		      };
+		    },
+		    created(){
+		    	var that = this;
+		    	// 编辑自己的文章
+		        var postId = $.query.get('id');
+		        console.log(postId);
+		        if(postId == ""){
+		        	console.log("不可编辑！")
+		        }else{
+		        	console.log("编辑");
+		        	$.ajax({
+			    		url: "http://192.168.1.105/app/index.php?i=2&c=entry&do=api_posts&m=gengkuai_BBS&op=get_one_post",
+			    		type: 'POST',
+			    		dataType: 'json',
+			    		data: {
+			    			id: postId
+			    		},
+			    	})
+			    	.done(function(data) {
+			    		console.log(data);
+			    		var tempData = data.data;
+			    		if(data.code == 0){
+			    			// 同步标题
+			    			that.items.text = tempData.title;
+			    			// 同步内容
+			    			that.content = tempData.content;
+			    			// 同步标签
+			    			$(".classifyBox select").append('<option data='+ tempData.parent_class_id +' value='+
+			    				tempData.class_id + '>'+tempData.class_name+'</option>');
+			    		}
+			    	})
+			    	.fail(function(err) {
+			    		console.log(err);
+			    	})
+			    	.always(function() {
+			    		console.log("complete");
+			    	});
+		        }
+		    },
+		    methods: {
+		      handleClose(tag) {
+		        this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+		      },
+
+		      showInput() {
+		        this.inputVisible = true;
+		        this.$nextTick(_ => {
+		          this.$refs.saveTagInput.$refs.input.focus();
+		        });
+		      },
+		      handleInputConfirm() {
+		        let inputValue = this.inputValue;
+		        if (inputValue) {
+		          this.dynamicTags.push(inputValue);
+		        }
+		        this.inputVisible = false;
+		        this.inputValue = '';
+		        // dataInfo.label.push(inputValue)
+		      },
+		      getTitle(){
+		      	if(this.$refs.count.value != ""){
+		      		dataInfo.title = this.$refs.count.value
+		      	}else{
+		      		this.palceHolder = "文章标题不能为空！"
+		      	}
+		      }
+		    },
+		    watch:{   //watch()监听某个值（双向绑定）的变化，从而达到change事件监听的效果
+                items:{
+                    handler:function(){
+                        var _this = this;
+                        var _sum = 30; //字体限制为100个
+                        _this.$refs.count.setAttribute("maxlength",_sum);
+                        _this.number= _sum- _this.$refs.count.value.length;
+                    },
+                    deep:true
+                }
+            }
+        })
+        //获取文章分类
+        $.ajax({
+        	url: strongUrl+'&do=api_posts&op=class&state=we7sid-'+id,
+        	type: 'GET',
+        	dataType: 'json',
+        	
+        })
+        .done(function(data) {
+        	console.log(data.data)
+        	// 文章分类
+	        var arr = data.data;
+		    var treeArr = [];
+		    function tree( arr , pid , level){
+		        for (var i = 0; i < arr.length; i++) {
+		          if( arr[i].parent_id == pid ){
+		              arr[i].level = level;
+		              treeArr.push(arr[i]);
+		              tree( arr,arr[i].id,level+1 );
+		          }
+		        }
+		      }
+		    tree( arr , 0 , 0);
+		    for (var i = 0; i < treeArr.length; i++) {
+		      var tmpStr = "";
+		      for (var j = 0; j < treeArr[i].level; j++) {
+		          tmpStr += "　";
+		      }
+		      var txt1=$("<option data="+ treeArr[i].parent_id +" value="+treeArr[i].id + "></option>").text(tmpStr  + treeArr[i].name);
+		      // document.write( tmpStr  + treeArr[i].city + "<br/>");
+		      $('.classifyBox select').append(txt1);
+
+		    }
+		    // 获取分类名
+		    $(".classifyBox select").bind("change",function(){
+		        //获取被选中的option的值
+		        var miaoshu = $(this).val();
+		        //获取自定义属性的值
+		        dataInfo.class_id = $(this).find("option:selected").attr("value");
+		        dataInfo.fclass_id = $(this).find("option:selected").attr("data");
+		    });
+        })
+        .fail(function(err) {
+        	console.log(err);
+        })
+        .always(function() {
+        	console.log("complete");
+        });
+    </script>
+    <!-- 引入头部 -->
+    <script>
+        $(function() {
+            $('#header').load('header.html');
+            $('#footer').load('footer.html');
+        })
+    </script>
+</body>
+
+</html>

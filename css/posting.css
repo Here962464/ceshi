@@ -1,0 +1,259 @@
+body{
+	background: rgb(246,248,249);
+}
+.app{
+	background: #fff;
+	padding: 60px 80px;
+	width: 55%;
+	height: auto;
+	overflow: hidden;
+	margin: 50px auto;
+	border: 1px solid #eee;
+	border-radius: 6px;
+	box-shadow: 1px 1px 4px 2px #eee;
+	position: relative;
+}
+.articleTitle{
+	border-bottom: 1px solid #eee;
+}
+.articleTitle h4{
+	font-weight: normal;
+	padding: 10px 0;
+}
+.baseInfo{
+	display: flex;
+}
+.baseInfo i{
+	color: #aaa;
+	font-size: 16px;
+}
+.baseInfo span{
+	text-align: center;
+	vertical-align: middle;
+	float: left;
+	padding: 15px 40px 15px 0;
+	color: #aaa;
+	font-size: 14px;
+}
+.baseInfo span a{
+	color: #aaa;
+	font-size: 14px;
+}
+.content{
+	padding: 40px 0;
+}
+.articleContent{
+
+}
+.comment_amount{
+	border-top: 1px solid #eee;
+	margin: 60px 0 0 0;
+	padding: 20px 0;
+	color: #aaa;
+	cursor: pointer;
+}
+.comment_amount i{
+	margin-right: 10px;
+	font-size: 18px;
+	color: #aaa;
+}
+/*评论*/
+.comment{
+	display: flex;
+	width: 80%;
+	margin: 50px auto;
+	border-radius: 4px;
+	background: rgb(248,248,248);
+	padding: 20px 40px 20px 0;
+}
+.comment .layui-layedit{
+	margin-top: 5%;
+	background: #fff;
+	width: 90%;
+}
+.personal{
+	width: 10%;
+	height: 10%;
+	text-align: center;
+}
+.avatar{
+	width: 35px;
+	height: 35px;
+	border-radius: 4px;
+	margin-right: 10px;
+}
+.nickName{
+	display: inline-block;
+	width: 35px;
+	height: 45px;
+	text-align: center;
+	vertical-align: middle;
+	margin-right: -65%;
+	font-size: 18px;
+	color: rgb(53,53,53);
+	font-weight: normal;
+}
+.submit{
+	text-align: center;
+	width: 100%;
+}
+.submitComment{
+	background: #67c23a;
+	color: #fff;
+	border:10px solid #67c23a;
+	padding: 0 12px; 
+	border-radius: 4px;
+	cursor: pointer;
+}
+.submitComment:active{
+	background: #228B22;;
+	border:10px solid #228B22;
+
+}
+/*显示用户评论*/
+.commentByOther{
+	background: #fff;
+	padding: 20px 80px;
+	width: 55%;
+	height: auto;
+	overflow: hidden;
+	margin: 50px auto;
+	border: 1px solid #eee;
+	border-radius: 6px;
+	box-shadow: 1px 1px 4px 2px #eee;
+}
+.commentByOther h3{
+	padding: 20px 0;
+}
+.commentByOther ul{
+	padding: 10px;
+}
+.commentByOther ul li{
+	padding: 15px 30px;
+	margin:10px 0;
+	background: rgb(246,248,249);
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	position: relative;
+	border-bottom: 1px solid #eee;
+}
+.commentByOther ul li>img{
+	width: 40px;
+	height: 40px;
+}
+.commentByOther ul li.commentParent{
+	background: #fff;
+	padding: 20px 10px;
+	flex-wrap: wrap;
+}
+.commentByOther ul li.commentParent>img{
+	width: 50px;
+	height: 50px;
+}
+.commentName{
+	margin-left: 20px;
+	color: #aaa;
+}
+.commentTime{
+	position: absolute;
+	right: 10px;
+	bottom: 5px;
+	color: #aaa;
+	margin-right: 20px;
+}
+.commentContent{
+	margin: 10px 50px;
+	padding: 20px;
+	width: 100%;
+}
+.miniIcon{
+	color: #aaa;
+}
+.parse{
+	color: #aaa;
+	cursor: pointer;
+	margin-right: 20px;
+}
+.parse span{
+	color: #aaa;
+}
+.parse i,.commentSon i{
+	color: #aaa;
+	font-size: 20px;
+}
+.commentSon{
+	color: #aaa;
+	cursor: pointer;
+}
+.selected{
+	color: #001F56;
+}
+.selected i,.selected span{
+	color: #001F56;
+}
+.delete{
+	color: #aaa;
+	margin-left: 15px;
+	cursor: pointer;
+}
+.delete i{
+	color: #aaa;
+	font-size: 18px;
+}
+.hiddenBox{
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding-top: 40px;
+	height: 330px;
+	display: none;
+	background: rgb(246,248,249);
+	text-align: center;
+	position: relative;
+}
+.show{
+	display: block;
+}
+.replay{
+	resize: none;
+	width: 50%;
+	margin-top: 40px;
+	border:none;
+	height: 160px;
+	max-width: 60%;
+	max-height: 190px;
+	padding: 10px 20px;
+	border: 1px solid #eee;
+}
+.commenttoWho{
+	position: absolute;
+	left: 0;
+	top: 40px;
+	display: flex;
+	align-items: center;
+}
+.commenttoWho span{
+	color: #aaa;
+	margin: 0 8px;
+}
+.commenttoWho img{
+	width: 35px;
+	height: 35px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.hiddenBox button{
+	position: absolute;
+	bottom: 30px;
+	left: 45%;
+	width: 10%;
+	background: #67c23a;
+	color: #fff;
+	outline: none;
+	padding: 5px 10px;
+	border-radius: 4px;
+	border:1px solid #67c23a;
+	cursor: pointer;
+}

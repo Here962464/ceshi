@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		/*footer*/
+		.footer{
+			padding: 10px 40px;
+			width: 60%;
+			margin: 50px auto;
+			border-top: 1px solid #eee;
+			position: relative;
+			bottom: 0;
+			left: 0;
+		}
+		.footer ul li{
+			padding: 10px 20px;
+			margin-top: 20px;
+			border-right: 1px solid #eee;
+		}
+		.footer ul li a{
+			font-size: 14px;
+		}
+		.footer ul li.no-right-border{
+			border-right: none;
+		}
+		.Copyright{
+			padding: 10px 20px;
+			margin-top: 20px;
+			font-size: 14px;
+		}
+	</style>
+</head>
+<body>
+	<div class="footer" id="globalInfoLink">
+		<ul class="fl">
+			<li class="fl" v-for='item in Linkinfo'>
+				<a v-bind:href="item.url" class="rgb154">{{item.name}}</a>
+			</li>
+		</ul>
+		<span class="fr Copyright rgb154">Copyright © 2018 七蚁科技. All Rights Reserved.</span>
+	</div>
+	<script type="text/javascript">
+		var globalInfoLink = new Vue({
+			el:"#globalInfoLink",
+			data:{
+				Linkinfo:[],
+				test:'123'
+			},
+			created(){
+				var that = this;
+			}
+		})
+		$.ajax({
+			url: 'http://192.168.1.105/app/index.php?i=2&c=entry&do=api_config&m=gengkuai_BBS',
+			type: 'GET',
+			dataType: 'json',
+			data: {},
+		})
+		.done(function(data) {
+			console.log(data.link);
+			globalInfoLink.$data.Linkinfo = data.link;
+		})
+		.fail(function(err) {
+			console.log(err);
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		$('#app').children().last().addClass('no-right-border');
+	</script>
+</body>
+</html>

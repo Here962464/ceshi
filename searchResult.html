@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>七蚁科技</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="font/iconfont.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- 网页icon -->
+	<link rel="icon" type="image/x-icon" href="images/logo.png" />
+	<style type="text/css">
+		.searchResult{
+			width: 55%;
+			margin:0 auto;
+			padding: 80px 80px 30px 80px;
+		}
+		.lists{
+			background: #fff;
+			width: 90%;
+			height: auto;
+			overflow: hidden;
+			margin: 20px 0;
+			padding: 20px 60px;
+			border: 1px solid #eee;
+			border-radius: 6px;
+			box-shadow: 1px 1px 1px 1px rgb(241,243,245);
+			position: relative;
+		}
+		.result{
+			font-size: 28px;
+		}
+		.title{
+			font-size: 18px;
+			display: block;
+			padding: 5px 0;
+		}
+		.title:hover{
+			text-decoration: underline;
+		}
+		.lists ul li{
+			color:#9a9a9a;
+			border-bottom: 1px solid #eee;
+			padding: 20px 0;
+		}
+		.lists ul li.hasBase{
+			padding: 0;
+		}
+		div.content{
+			border: none;
+			margin:0;
+			padding: 10px 0;
+			box-shadow: none;
+			color:#9a9a9a;
+		}
+		.baseInfo{
+			padding-top: 20px;
+		}
+		.baseInfo i{
+			font-size: 22px;
+			color:#aaa;
+			margin-right: 5px;
+		}
+		.nickName,.time,.classify{
+			margin-right: 20px;
+		}
+		.conmment{
+			margin-left: 20px;
+			display: flex;
+			align-items: center;;
+		}
+		.showBox{
+			background: #fssff;
+			width: 90%;
+			overflow: hidden;
+			margin: 20px 0;
+			padding: 20px 60px;
+			border: 1px solid #eee;
+			border-radius: 6px;
+			box-shadow: 1px 1px 1px 1px rgb(241,243,245);
+			position: relative;
+			color:#9a9a9a;
+			text-align: center;
+			line-height: 500px;
+		}
+		.warn{
+			color: rgb(255,66,1);
+			font-size: 30px;
+			padding:10px;
+		}
+	</style>
+</head>
+<body id="scroll">
+	<!-- head on -->
+	<div id="header"></div>
+	<!-- head off -->
+	<div class="searchResult" id="app">
+		<span class="result">搜索结果</span>
+		<div v-if="show" class="lists">
+			<ul>
+				<li v-for="item in info">
+					<a v-bind:href="toUrl+'?id='+item.id" class="title">{{item.title}}</a>
+					<div v-html class="content">{{item.content}}</div>
+					<div class="baseInfo">
+						<span class="classify fl rgb154">[ {{item.class_name}} ]</span>
+						<span class="nickName fl rgb154">{{item.user_name}}</span>
+						<span class="time fl rgb154">{{item.create_time}}</span>
+						<span class="conmment fr rgb154"><i class="iconfont icon-pinglun"></i>{{item.good_count}}</span>
+					</div>
+				</li>
+				<li v-if="hasBase" class="baseLine">----------------------------这已经是我的底线了--------------------------------</li>
+			</ul>
+		</div>
+		<div v-else class="showBox">
+			<span class="warn">!</span>很抱歉，您搜索的内容没有相应结果
+		</div>
+	</div>
+	<!-- footer on -->
+	<div id="footer"></div>
+	<!-- footer off -->
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="js/jqurey.params.js"></script>
+    <script type="text/javascript" src="js/watchLogIn.js"></script>
+	<script type="text/javascript">
+		function getCookie(c_name){
+			if (document.cookie.length>0){
+				c_start=document.cookie.indexOf(c_name + "=")
+				if (c_start!=-1){ 
+				    c_start=c_start + c_name.length+1 
+				    c_end=document.cookie.indexOf(";",c_start)
+				    if (c_end==-1) c_end=document.cookie.length
+				    return unescape(document.cookie.substring(c_start,c_end))
+				} 
+			}
+			return ""
+		}
+		var keyWord = $.query.get("key");
+		var start = 0;
+		var end = 3;
+		var amount = 0;
+		// 日期格式转换
+		function timestampToTime(timestamp) {
+		    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+		    Y = date.getFullYear() + '-';
+		    M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		    D = date.getDate() + ' ';
+		    h = date.getHours() + ':';
+		    m = date.getMinutes() + ':';
+		    s = date.getSeconds();
+		    return Y+M+D;
+		}
+		var app = new Vue({
+			el:"#app",
+			data:{
+				info:[],
+				toUrl:"postings.html",
+				show:true,
+				hasBase:false
+			},
+			created(){
+				var that = this;
+				console.log(keyWord);
+				sendRequest(end);
+			}
+		})
+
+		function sendRequest(end){
+			$.ajax({
+				url: 'http://192.168.1.105/app/index.php?i=2&c=entry&m=gengkuai_BBS&do=api_posts&op=search',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					keyword: keyWord,
+					limit1:start,
+					limit2:end
+				},
+			})
+			.done(function(data) {
+				console.log(data);
+				var tempInfo = data.data;
+				amount = parseInt(data.count.count);
+				if(data.code == 0){
+					if(amount != "0"){
+						for(var i=0;i<tempInfo.length;i++){
+							var time = timestampToTime(tempInfo[i].create_time);
+							console.log(time)
+							tempInfo[i].create_time = time;
+						}
+						app.$data.info = tempInfo;
+					}else if(amount == "0"){
+						app.$data.show = false;
+					}
+				}else{
+					app.$data.show = false;
+					alert(data.msg)
+				}
+			})
+			.fail(function(err) {
+				console.log(err);
+			})
+			.always(function() {
+				console.log("complete");
+			});
+		}
+
+		// 鼠标滚轮事件
+		var d = document.getElementById("app").offsetHeight;
+		window.addEventListener("scroll", function(event) {
+		    var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+		    // console.log(scrollTop);  
+		    if(document.documentElement.scrollHeight == document.documentElement.clientHeight + scrollTop) {
+		        // alert("Touch_Buttom!");
+		        end += 3;
+		        console.log(end)
+		        console.log(amount)
+		        if(end < amount+3){
+		       	 	sendRequest(end)
+		        	// 隐藏底线
+		        	app.$data.hasBase = false;
+		        }else if(end >= amount){
+		        	// 显示底线
+		        	app.$data.hasBase = true;
+		        }
+		        
+		    }
+		});
+
+	 	//引入头部/
+		$(function() {
+            $('#header').load('header.html');
+            $('#footer').load('footer.html');
+        })
+	</script>
+</body>
+</html>
