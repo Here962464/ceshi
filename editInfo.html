@@ -5,28 +5,208 @@
 	<title id="companyName">七蚁科技</title>
     <!-- 网页icon -->
 	<link rel="icon" type="image/x-icon" href="images/logo.png" />
-	<link rel="stylesheet" type="text/css" href="css/mine.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<style type="text/css">
+		[v-cloak] {
+		    display: none !important;
+		}
+		body{
+			background: rgb(246,248,249);
+		}
+		.editInfo{
+			background: #fff;
+			padding: 10px 40px;
+			width: 50%;
+			height: auto;
+			overflow: hidden;
+			margin: 50px auto;
+			border: 1px solid #eee;
+			border-radius: 6px;
+			box-shadow: 1px 1px 4px 2px #eee;
+			position: relative;
+			overflow-x: hidden;
+		}
+		.title{
+			width: 54%;
+			overflow: hidden;
+			margin: 50px auto;
+			font-size: 28px;
+			color: rgb(53,53,53);
+		}
+		.topBlock{
+			display: flex;
+			align-items: center;
+			margin: 20px 0;
+			border-bottom: 1px solid #eee;
+		}
+		.editInfo .blockLeft{
+			text-align: center;
+			margin-left: 40px;
+			margin-right: 140px;
+		}
+		.editInfo .blockLeft img{
+			width: 130px;
+			height: 130px;
+			padding:10px;
+			display: block;
+			margin-right: 10px;
+			margin-bottom: 10px;
+		}
+		.editInfo ul li{
+			padding: 20px 0;
+			list-style: none;
+		}
+		.editInfo ul li input,.reviseInfo{
+			outline: none;
+			border:none;
+			width: 60%;
+			padding: 10px 20px;
+			font-size: 16px;
+			box-shadow: 0px 0px 4px 1px rgb(88,88,88,0.2) inset;
+		}
+		.editInfo ul{
+			width: 50%;
+			margin: 20px;
+		}
+		#uploadAvatar{
+			background: #fff;
+			border:1px solid #ccc;
+			border-radius: 6px;
+			color: rgb(53,53,53);
+		}
+		.editInfo .confirm{
+			border:none;
+			background: #1aad19;
+			padding: 6px 20px;
+			border-radius: 4px;
+			color: #fff;
+			margin-left: 40%;
+			cursor: pointer;
+		}
+		.blockRight{
+			margin-left: 120px;
+		}
+		.baseInformation{
+			font-size: 18px;
+			color: rgb(53,53,53);
+		}
+		.changePsd{
+			padding: 20px 0;
+			cursor: pointer;
+		}
+		.bottomBlock{
+			position: fixed;
+			left: 50%;
+			top: 50%;
+			width: 600px;
+			height: 500px;
+			margin-left: -300px;
+			margin-top: -250px;
+			background: #fff;
+			z-index: 1000000;
+			border-radius: 4px;
+			-moz-border-radius:4px;
+　　　　     -webkit-border-radius:4px;
+			box-shadow: 1px 1px 1px 2px #eee;
+		}
+		.bottomBlock ul{
+			margin-top: 100px;
+			width: 100%;
+			height: 200px;
+		}
+		.bottomBlock ul li{
+			text-align: center;
+			padding: 10px 40px;
+		}
+		.bottomBlock ul li input{
+			padding: 8px 10px;
+			outline: none;
+			border:none;
+			border-bottom: 1px solid #ccc;
+		}
+		.bottomBlock .cancleChange,.bottomBlock .confirmChange{
+			width: 20%;
+			margin-right: 20px;
+			padding: 10px 0;
+			outline: none;
+			border: 1px solid #eee;
+			border-radius: 4px;
+			-moz-border-radius:4px;
+　　　　     -webkit-border-radius:4px;
+			cursor: pointer;
+		}
+		.ifChange{
+			width: 100%;
+			height: 200px;
+			display: flex;
+			text-align: center;
+			align-content: center;
+			vertical-align: middle;
+			align-items: center;
+			padding:0 28%;
+			overflow-x: hidden;
+		}
+		.ifChange button.cancleChange{
+			background: #F5F5F5;
+			color:rgb(53,53,53);
+			margin-left: 140px;
+		}
+		.ifChange button.cancleChange:active{
+			background: #eee;
+			color:rgb(53,53,53);
+		}
+		.ifChange button.confirmChange{
+			background: #1aad19;
+			color: #fff;
+		}
+		.ifChange button.confirmChange:active{
+			box-shadow: .05em .1em .2em rgba(0,0,0,0.2) inset;
+		    background: #228B22;
+		    color: #fff;
+		}
+	</style>
 </head>
 <body>
 	<!-- head on -->
-	<div id="header">
-		
-	</div>
-	<p class="title">个人主页</p>
-	<div class="personal" id="personal">
-		<div class="baseInfo">
-			<img :src="avatar" class="avatar">
-			<ul class="about">
-				<li class="nickName">{{nickName}}</li>
-				<li class="info">{{info}}</li>
+	<div id="header"></div>
+	<p class="title">编辑资料</p>
+	<div class="editInfo" id="editInfo">
+		<div class="topBlock">
+			<div class="baseInformation">基本资料：</div>
+			<div class="blockLeft">
+				<img :src="avatar">
+				<button type="button" class="layui-btn" id="uploadAvatar">上传头像</button>
+			</div>
+			<ul class="blockRight">
+				<li class="nickName">
+					昵称：<input class="reviseName" type="text" name="username" :value="nickName" v-bind:placeholder="holder">
+				</li>
+				<li class="info">
+					简介：<textarea class="reviseInfo" style="font-size:14px;padding:10px;resize: none;height: 150px;width: 310px;max-width: 310px;max-height: 150px;" type="text" maxlength="100" name="userinfo" v-bind:placeholder="info"></textarea>
+				</li>
+				<li>
+					<button @click="comfirmRevise" class="confirm">保存</button>
+				</li>
 			</ul>
-			
 		</div>
-		<div class="praise">
-			<i class="iconfont icon-zan praiseIcon"></i> 获得过{{parse}}次赞
-			<ul class="gotPraise">
-				<li><span class="prasiseName">积分</span> {{integral}} </li>
-				<li><span class="prasiseName">余额</span> {{balance}} </li>
+		<div class="changePsd" @click="changePsd">密码设置 >> </div>
+	</div>
+	<div id="changePsd" v-if="changePsd" class="mask">
+		<div class="bottomBlock">
+			<ul class="changePsd">
+				<li class="oldPsd">
+					请输入旧密码：<input type="password" placeholder="请输入旧密码" name="username">
+				</li>
+				<li class="newPsd">
+					请输入新密码：<input type="password" :placeholder="oldPsdHolder" name="userinfo">
+				</li>
+				<li class="newPsdAgain">
+					请确认新密码：<input type="password" :placeholder="psdHolder" name="userinfo">
+				</li>
+				<li class="ifChange">
+					<button @click="cancle" class="cancleChange">取消</button>
+					<button @click="confirm" class="confirmChange">保存</button>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -36,9 +216,230 @@
 	<script type="text/javascript" src="js/vue.js"></script>
 	<script type="text/javascript" src="font/iconfont.js"></script>
 	<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="layui/layui.js"></script>
     <script type="text/javascript" src="js/watchLogIn.js"></script>
-    <script type="text/javascript" src="js/mine.js"></script>
 	<script>
+		//cookie函数封装
+		function setCookie(c_name,value,expiredays){
+			var exdate=new Date()
+			exdate.setDate(exdate.getDate()+expiredays)
+			document.cookie=c_name+ "=" +escape(value)+
+			((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+		}
+		function getCookie(c_name){
+			if (document.cookie.length>0){
+				c_start=document.cookie.indexOf(c_name + "=")
+				if (c_start!=-1){ 
+				    c_start=c_start + c_name.length+1 
+				    c_end=document.cookie.indexOf(";",c_start)
+				    if (c_end==-1) c_end=document.cookie.length
+				    return unescape(document.cookie.substring(c_start,c_end))
+				} 
+			}
+			return ""
+		}
+		// 获取session数据
+		// 用户名
+		var userName = getCookie('userName');
+		//头像
+		var avatar = getCookie('avatar');
+		// sessionId
+		var id = getCookie('sessionId');
+		// 服务器地址
+		var url = getCookie('url');
+
+		//存修改后的地址
+		var avatarUrl = "";
+
+		var editInfo = new Vue({
+			el:"#editInfo",
+			data:{
+				avatar: avatar,
+				nickName: userName,
+				info:"便于其他人更了解你",
+				holder:"用户名不能为空！"
+			},
+			methods:{
+				comfirmRevise: function(){
+					if(userName==""){
+						login.$data.showMask = true;
+					}else{
+						//判断头像是否改动
+						if(avatarUrl == ""){
+							avatarUrl = avatar;
+						};
+						//判断用户名是否改动
+						var reviseName = $(".reviseName").val();
+						if(reviseName == ""){
+							reviseName = userName;
+						}
+						//判断个人简介是否改动
+						var reviseInfo = $(".reviseInfo").val();
+						console.log(reviseName)
+						console.log(reviseInfo)
+						$.ajax({
+							url: url+'&do=api_account&op=setting&state=we7sid-'+id,
+							type: 'POST',
+							dataType: 'json',
+							data: {
+								avatar: avatarUrl,
+								nickname:reviseName,
+								bio:reviseInfo
+							},
+						})
+						.done(function(data) {
+							if(data.code == 0){
+								// session缓存用户名
+								setCookie("userName",reviseName,3);
+								// session缓存用用户头像
+								setCookie("avatar",avatarUrl,3);
+								window.location.href="mine.html";
+								//avatar = data.
+
+							}
+							console.log(data);
+						})
+						.fail(function(err) {
+							console.log(err);
+						})
+						.always(function() {
+							console.log("complete");
+						});
+					}
+				},
+				changePsd: function(){
+					if(userName == ""){
+						login.$data.showMask = true;
+					}else{
+						changePsd.$data.changePsd = true;
+					}
+				}
+			},
+			created(){
+				if(avatar == ""){
+					// alert(1);
+					this.avatar = "images/default.png"
+				}
+				var that = this;
+				$.ajax({
+					url: url+'&do=api_account&op=userinfo&state=we7sid-'+id,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						type: 'info'
+					},
+				})
+				.done(function(data) {
+					if(data.bio !== ""){
+						that.info = data.bio;
+					}
+					console.log(data);
+					// 判断用户名是否为空
+					if(data.nickname == "" && data.email == "" && data.mobile != ""){
+						that.nickName = data.mobile;
+					}else if(data.nickname == "" && data.mobile == "" && data.email != ""){
+						that.nickName = data.email;
+					}else if(data.nickname != ""){
+						that.nickName = data.nickname;
+					}
+				})
+				.fail(function(err) {
+
+					console.log(err);
+				})
+				.always(function() {
+					console.log("complete");
+				});
+			}
+		})
+		var changePsd = new Vue({
+			el:"#changePsd",
+			data:{
+				changePsd:false,
+				psdHolder:"请确认新密码",
+				oldPsdHolder:"请输入新密码"
+			},
+			methods:{
+				cancle(){
+					this.changePsd = false;
+				},
+				confirm(){
+					var that = this;
+					var oldPsd = $(".oldPsd input").val();
+					var newPsd = $(".newPsd input").val();
+					var newPsdAgain = $(".newPsdAgain input").val();
+					if(newPsd == newPsdAgain && newPsd!=""){
+						// console.log(newPsdAgain)
+						$.ajax({
+							url:  url+'&do=api_account&op=change_pwd&state=we7sid-'+id,
+							type: 'POST',
+							dataType: 'json',
+							data: {
+								oldpwd : oldPsd,
+								newpwd: newPsd
+							},
+						})
+						.done(function(data) {
+							console.log(data);
+							if(data.code == 0){
+								// alert("修改成功！");
+								that.changePsd = false;
+								//重新登陆
+								// login.$data.showMask = true;
+								login.$data.hidden = true;
+								// 销毁cookie
+								// cookie缓存用户名
+								setCookie("userName","",-1);
+								// cookie缓存用用户头像
+								setCookie("avatar","",-1);
+								// cookie缓存用户id
+								setCookie('uId', "",-1);
+								// cookie缓存session id
+								setCookie('sessionId', "",-1);
+								// cookie缓存服务器地址
+								setCookie('url', "",-1);
+								// 刷新当前页面
+								window.location.reload()
+							}else{
+								alert(data.msg)
+							}
+						})
+						.fail(function(err) {
+							console.log(err);
+						})
+						.always(function() {
+							console.log("complete");
+						});
+						this.psdHolder = "请确认新密码"
+					}else{
+						$(".newPsdAgain input").val("");
+						this.psdHolder = "两次密码不一致！"
+					}
+				}
+			}
+		})
+		layui.use('upload', function(){
+		  var upload = layui.upload;
+		   
+		  //执行实例
+		  var uploadInst = upload.render({
+		    elem: '#uploadAvatar' //绑定元素
+		    ,url: url+'&do=api_file&op=upload' //上传接口
+		    ,done: function(res){
+		      //上传完毕回调
+		      console.log(res)
+		      if(res.code == 0){
+		      	//更新页面头像
+		      	avatarUrl = res.data.src;
+		      	avatar = avatarUrl;
+		      	editInfo.$data.avatar = res.data.src;
+		      }
+		    }
+		    ,error: function(){
+		      //请求异常回调
+		    }
+		  });
+		});
         $(function() {
             $('#header').load('header.html');
             $('#footer').load('footer.html');

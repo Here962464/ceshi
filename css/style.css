@@ -55,7 +55,7 @@ body{
 	font-size: 20px;
 }
 .class_name_active p{
-	color: #67c23a;
+	color: #1aad19;
 }
 .contentBlock{
 	display: none;
@@ -105,17 +105,17 @@ body{
 .write{
 	font-size: 16px;
 	cursor: pointer;
-	border: 1px solid #67c23a;
+	border: 1px solid #1aad19;
 	border-radius: 6px;
 	text-align: center;
 	padding: 10px 20px;
-	color: #67c23a;
+	color: #1aad19;
 	display: flex;
 	align-items: center;
 }
 .write i{
 	font-size: 22px;
-	color: #67c23a;
+	color: #1aad19;
 	margin-right: 5px;
 }
 .write:hover{
@@ -141,8 +141,8 @@ body{
 	border-bottom: 2px solid #aaa;
 }
 .listClassify li.selected{
-	color: #67c23a;
-	border-bottom: 2px solid #67c23a;
+	color: #1aad19;
+	border-bottom: 2px solid #1aad19;
 }
 /*标签*/
 .labelBox{
@@ -204,4 +204,14 @@ body{
 	padding: 10px;
 	color: #aaa;
 	font-size: 14px;
+}
+.IEmask{
+	width: 100%;
+	height: 100%;
+	background: rgb(255,255,255);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999999999999999;
+	display: none;
 }

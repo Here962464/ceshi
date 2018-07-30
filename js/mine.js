@@ -1,4 +1,3 @@
-
 function getCookie(c_name){
 	if (document.cookie.length>0){
 		c_start=document.cookie.indexOf(c_name + "=")
@@ -36,7 +35,14 @@ var personal = new Vue({
 		avatar:avatar
 	},
 	methods:{
-
+        editInfo(){
+        	if(userName != ""){
+        		// 刷新当前页面
+				window.location.href="editInfo.html";
+        	}else{
+        		login.$data.showMask = true;
+        	}
+        }
 	},
 	created(){
 		if(avatar == ""){
@@ -52,7 +58,7 @@ var personal = new Vue({
 			},
 		})
 		.done(function(data) {
-			console.log(data);
+			////console.log(data);
 			if(data.bio !== ""){
 				that.info = data.bio;
 			}
@@ -74,10 +80,10 @@ var personal = new Vue({
 		})
 		.fail(function(err) {
 
-			console.log(err);
+			////console.log(err);
 		})
 		.always(function() {
-			console.log("complete");
+			////console.log("complete");
 		});
 		
 	}
@@ -89,7 +95,7 @@ var writeNewArticle = new Vue({
 	},
 	methods:{
         jumpTo(){
-        	console.log(userName);
+        	////console.log(userName);
         	if(userName != ""){
         		// 刷新当前页面
 				window.location.href="articleDetail.html";
@@ -109,12 +115,13 @@ var moduleList = new Vue({
 		editUrl:"articleDetail.html",
 		OnExamine:"待审核...",
 		ExamineErr:"审核未通过!",
-		hasBase:false
+		hasBase:false,
+		hasNoArticle:false
 	},
 	methods:{
         deleteArticle(id){
         	var that = this;
-        	console.log(id);
+        	////console.log(id);
         	layer.open({
 			  type: 0, 
 			  title:"提示",
@@ -129,7 +136,7 @@ var moduleList = new Vue({
 			  			},
 			  		})
 			  		.done(function(data) {
-			  			console.log(data);
+			  			////console.log(data);
 			  			if(data.code == 0){
 			  				articleContent();
 			  			}else{
@@ -137,17 +144,18 @@ var moduleList = new Vue({
 			  			}
 			  		})
 			  		.fail(function() {
-			  			console.log("error");
+			  			////console.log("error");
 			  		})
 			  		.always(function() {
-			  			console.log("complete");
+			  			////console.log("complete");
 			  		});
 			  		layer.close(index); //如果设定了yes回调，需进行手工关闭
 			  }
 			});
         }
     },
-    crested(){
+    created(){
+
     }
 })
 // 日期格式转换
@@ -173,36 +181,41 @@ function articleContent(){
 		},
 	})
 	.done(function(data) {
-		console.log(data)
-		var info = data.data;
-		amount = data.count.count;
-		// 操作Vue实例里的变量
-		for(var i=0;i<info.length;i++){
-			var time = timestampToTime(info[i].create_time);
-			if(info[i].isshow == 0){
-				// 审核中
-				info[i].OnExamine = true;
-				info[i].ExamineErr = false;
-			}else if(info[i].isshow == 1){
-				// 审核通过
-				info[i].OnExamine = false;
-				info[i].ExamineErr = false;
-			}else if(info[i].isshow == 2){
-				// 审核未通过
-				info[i].OnExamine = false;
-				info[i].ExamineErr = true;
+		////console.log(data);
+		if(data.count.count == "0"){
+			moduleList.$data.hasNoArticle = true;
+		}else{
+			var info = data.data;
+			amount = data.count.count;
+			// 操作Vue实例里的变量
+			for(var i=0;i<info.length;i++){
+				var time = timestampToTime(info[i].create_time);
+				if(info[i].isshow == 0){
+					// 审核中
+					info[i].OnExamine = true;
+					info[i].ExamineErr = false;
+				}else if(info[i].isshow == 1){
+					// 审核通过
+					info[i].OnExamine = false;
+					info[i].ExamineErr = false;
+				}else if(info[i].isshow == 2){
+					// 审核未通过
+					info[i].OnExamine = false;
+					info[i].ExamineErr = true;
+				}
+				////console.log(time)
+				info[i].create_time = time;
+				// ////console.log(timestampToTime(info[i].posts[j].create_time));
 			}
-			console.log(time)
-			info[i].create_time = time;
-			// console.log(timestampToTime(info[i].posts[j].create_time));
+			// ////console.log(info[2].posts[0].time)
+			moduleList.$data.infoList = info;
 		}
-		// console.log(info[2].posts[0].time)
-		moduleList.$data.infoList = info;
+		
 	})
 	.fail(function(err) {
-		console.log(err);
+		////console.log(err);
 	}).always(function() {
-		console.log("complete");
+		////console.log("complete");
 	});
 }
 // 首次加载文章列表
@@ -212,7 +225,7 @@ var d = document.getElementById("contentList").offsetHeight;
 // console.info(d);
 window.addEventListener("scroll", function(event) {
     var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-    // console.log(scrollTop);  
+    // ////console.log(scrollTop);  
     if(document.documentElement.scrollHeight == document.documentElement.clientHeight + scrollTop) {
         // alert("Touch_Buttom!");
         end += 10;

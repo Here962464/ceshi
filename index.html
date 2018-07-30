@@ -28,6 +28,7 @@
 	</style>
 </head>
 <body>
+	<div class="IEmask" id="IEmask"></div>
 	<!-- head on -->
 	<div id="header"></div>
 	<!-- head off -->
@@ -93,6 +94,20 @@
 	<!-- footer on -->
 	<div id="footer"></div>
 	<!-- footer off -->
+	<script type="text/javascript">
+		var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+		var ua = navigator.userAgent.toLowerCase();  
+
+		//判断是否IE浏览器
+		if (userAgent.indexOf("Trident") > -1) {
+		   alert('系统检测到您正在使用ie8以下内核的浏览器，不能实现完美体验，请更换或升级浏览器访问！');
+		   // 刷新当前页面
+			// window.location.reload()
+			document.getElementById("IEmask").style.display = "block";
+		}else{
+			// alert(userAgent.indexOf("Trident"));
+		}
+	</script>
 	<script src="js/vue.js"></script>
 	<script type="text/javascript" src="font/iconfont.js"></script>
 	<script type="text/javascript" src="js/jquery-1.10.2.js"></script>

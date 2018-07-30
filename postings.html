@@ -32,11 +32,11 @@
 			</div>
 			<div class="content">
 				<div class="articleContent" v-html="articleContent"></div>
-				<div v-cloak class="comment_amount" @click="showCommentBox">
+				<div v-cloak class="comment_amount" @click="!showCommentBox">
 					<i class="iconfont icon-pinglun"></i>
 					评论 {{comment_count}}
 				</div>
-				<div class="commentBox" v-show="showComment">
+				<div class="commentBox" v-show="!showComment">
 					<div class="comment">
 						<div v-cloak class="personal">
 							<img class="avatar" :src="avatar">
@@ -110,42 +110,46 @@
 		  	$('.submitComment').on('click',function(){
 		  		dataInfo.content = layedit.getContent(index);
 		  		console.log(dataInfo);
-		  		if(dataInfo.content != ""){
-		  			$.ajax({
-			        	url: url+'&do=api_posts&op=reply&state=we7sid-'+id,
-			        	type: 'POST',
-			        	dataType: 'json',
-			        	data: dataInfo,
-			    	}).done(function(data) {
-			        	console.log(data);
-			        	if(data.code == 0){
-			        		layer.open({
-			        		  type: 0,
-							  title: '提示信息',
-							  content: '评论成功！',
-							  yes: function(index, layero){
-							    window.location.reload()
-							  }
-							});
-							 
-			        	}else{
-			        		layer.open({
-			        		  type: 0,
-							  title: '提示信息'
-							  ,content: data.msg
-							});
-			        	}
-			        }).fail(function(err) {
-			        	console.log(err);
-			        }).always(function() {
-			        	console.log("complete");
-			        });
+		  		if(userName != ""){
+		  			if(dataInfo.content != ""){
+			  			$.ajax({
+				        	url: url+'&do=api_posts&op=reply&state=we7sid-'+id,
+				        	type: 'POST',
+				        	dataType: 'json',
+				        	data: dataInfo,
+				    	}).done(function(data) {
+				        	console.log(data);
+				        	if(data.code == 0){
+				        		layer.open({
+				        		  type: 0,
+								  title: '提示信息',
+								  content: '评论成功！',
+								  yes: function(index, layero){
+								    window.location.reload()
+								  }
+								});
+								 
+				        	}else{
+				        		layer.open({
+				        		  type: 0,
+								  title: '提示信息'
+								  ,content: data.msg
+								});
+				        	}
+				        }).fail(function(err) {
+				        	console.log(err);
+				        }).always(function() {
+				        	console.log("complete");
+				        });
+			  		}else{
+			  			layer.open({
+		        		  type: 0,
+						  title: '提示信息'
+						  ,content: "评论内容不能为空！"
+						});
+			  		}
 		  		}else{
-		  			layer.open({
-	        		  type: 0,
-					  title: '提示信息'
-					  ,content: "评论内容不能为空！"
-					});
+		  			login.$data.showMask = true;
 		  		}
 		  		
 		  	})

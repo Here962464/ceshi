@@ -73,11 +73,11 @@ li.title>div{
 .submit button{
 	width: 100px;
 	outline: none;
-	border: 1px solid #67c23a;
+	border: 1px solid #1aad19;
 	padding: 6px 10px;
 	cursor: pointer;
 	color: #fff;
-	background: #67c23a;
+	background: #1aad19;
 	border-radius: 4px;
 }
 .submit button:active{

@@ -15,9 +15,7 @@
 </head>
 <body>
 	<!-- head on -->
-	<div id="header">
-		
-	</div>
+	<div id="header"></div>
 	<p class="title">个人主页</p>
 	<div class="personal" id="personal">
 		<div class="baseInfo">
@@ -25,6 +23,11 @@
 			<ul v-cloak class="about">
 				<li v-cloak class="nickName">{{nickName}}</li>
 				<li v-cloak class="info">{{info}}</li>
+				<li>
+					<a @click="editInfo" target="_blank">
+						<span class="edit fr rgb154"><i class="iconfont icon-icon-edit"></i> 编辑个人资料</span>
+					</a>
+				</li>
 			</ul>
 		</div>
 		<div v-cloak class="praise">
@@ -43,7 +46,10 @@
 		</p>
 	</div>
 	<div class="contentList" id="contentList">
-		<div>
+		<p v-if="hasNoArticle" class="hasNoArticle">
+			什么都没有~
+		</p>
+		<div v-else>
 			<ul class="lists">
 				<li v-cloak class="list-item rgb53" v-for='item in infoList'>
 					<a v-cloak v-bind:href="toUrl+'?id='+item.id">

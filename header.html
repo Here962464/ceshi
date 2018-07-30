@@ -111,7 +111,7 @@
 			color:rgb(53,53,53);
 		}
 		button.confirm{
-			background: #67c23a;
+			background: #1aad19;
 			color: #fff;
 		}
 		button.confirm:active{
@@ -286,6 +286,8 @@
 	<script type="text/javascript" src="font/iconfont.js"></script>
 	<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
 	<script type="text/javascript">
+		
+		
 		//cookie函数封装
 		function setCookie(c_name,value,expiredays){
 			var exdate=new Date()
@@ -388,9 +390,21 @@
 								that.avatar = data.data.account.avatar;
 								that.hidden = false;
 								// session缓存用户名
-								setCookie("userName",userName,3);
+								// 判断用户名是否为空
+								if(data.data.account.nickname == "" && data.data.account.email == "" && data.data.account.mobile != ""){
+									setCookie("userName",data.data.account.mobile,3)
+								}else if(data.data.account.nickname == "" && data.data.account.mobile == "" && data.data.account.email != ""){
+									setCookie("userName",data.data.account.email,3)
+								}else if(data.data.account.nickname != ""){
+									setCookie("userName",data.data.account.nickname,3)
+								}
 								// session缓存用用户头像
-								setCookie("avatar",data.data.default_head_img,3);
+								if(data.data.account.avatar == ""){
+									setCookie("avatar",data.data.default_head_img,3);
+								}else{
+									setCookie("avatar",data.data.account.avatar,3);
+								}
+								
 								// session缓存用户id
 								setCookie('uId', data.data.account.uid,3);
 								// session缓存session id

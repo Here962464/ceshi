@@ -22,8 +22,8 @@ var id = getCookie('sessionId');
 var url = getCookie('url');
 // uId
 var uId = getCookie('uId');
-console.log(uId)
-console.log(userName)
+////console.log(uId)
+////console.log(userName)
 
 var head_title = new Vue({
 	el:"#title",
@@ -79,9 +79,12 @@ var app = new Vue({
 	// vue生命周期
 	created(){
 		this.id = $.query.get('id')
-		console.log(this.id)
+		////console.log(this.id)
 		var that = this;
-		
+		//评论头像
+		if(userName == ""){
+			this.avatar = "images/default.png"
+		}
 		// 发请求
 		$.ajax({
 			url: "http://192.168.1.105/app/index.php?i=2&c=entry&do=api_posts&m=gengkuai_BBS&op=get_one_post",
@@ -92,7 +95,7 @@ var app = new Vue({
 			},
 		})
 		.done(function(data) {
-			console.log(data);
+			////console.log(data);
 			if(data.code == 0){
 				var tempInfo = data.data;
 				// 文章标题
@@ -111,24 +114,24 @@ var app = new Vue({
 				}
 				// 时间
 				var tempTime = timestampToTime(tempInfo.create_time);
-				console.log(tempTime)
+				////console.log(tempTime)
 				that.create_time = tempTime;
 				// 文章内容
 				that.articleContent = tempInfo.content;
 			}
 		})
 		.fail(function(err) {
-			console.log(err);
+			////console.log(err);
 		})
 		.always(function() {
-			console.log("complete");
+			////console.log("complete");
 		});
 		// 首次加载评论
 		fisrtLoadComment(that.id);
 	}
 })
 function fisrtLoadComment(dataId){
-	console.log(1)
+	////console.log(1)
 	// 请求文章评论
 	$.ajax({
 		url: 'http://192.168.1.105/app/index.php?i=2&c=entry&do=api_posts&m=gengkuai_BBS&op=get_reply',
@@ -139,17 +142,17 @@ function fisrtLoadComment(dataId){
 		},
 	})
 	.done(function(data) {
-		console.log(data);
+		////console.log(data);
 		var tempInfo = data.data;
-		console.log(app.$data.info)
+		////console.log(app.$data.info)
 		app.$data.info = tempInfo;
 		writeSon();
 	})
 	.fail(function(err) {
-		console.log(err);
+		////console.log(err);
 	})
 	.always(function() {
-		console.log("complete");
+		////console.log("complete");
 	});
 }
 // 日期格式转换
@@ -177,7 +180,7 @@ function writeSon(){
    		}
     }
     tree(app.$data.info,0,0)
-    console.log(app.$data.info);
+    ////console.log(app.$data.info);
     for (var i = 0; i <= treeArr.length - 1; i++) {
     	if (treeArr[i].user_id == uId && userName != "") {
     		var deleteContent = '<span class="delete deleteComment'+treeArr[i].id+'"> 删除 <i class="iconfont icon-shanchu"></i></span>';
@@ -186,21 +189,21 @@ function writeSon(){
     	}
     	if (treeArr[i].pid == 0) {
     		// 一级评论
-    		html += '</ul><ul><li data-id='+treeArr[i].id+' pid='+treeArr[i].pid+' class="commentParent"><img src='+'images/logo.png'+'><span class="commentName">'+
+    		html += '</ul><ul><li data-id='+treeArr[i].id+' pid='+treeArr[i].pid+' class="commentParent"><img src='+treeArr[i].avatar+'><span class="commentName">'+
 			treeArr[i].user_name+'：</span><span class="commentTime">'
 			+timestampToTime(treeArr[i].create_time)+'</span><br /><div class="commentContent">'+treeArr[i].content+'</div>'+
 			'<div class="miniIcon"><span class="parse data'+treeArr[i].id+'">共 <span class="parseAmount">'+treeArr[i].pares+'</span> 个赞 <i class="iconfont icon-zan"></i>'+
 			'</span><span class="commentSon dataComment'+treeArr[i].id+'">评论 <i class="iconfont icon-pinglun"></i>'+
-			'</span>' + deleteContent + '</div><div data-id='+treeArr[i].id+' class="hiddenBox"><div class="commenttoWho"><img src='+'images/logo.png'+'> 我 <span> 回复 </span> '+treeArr[i].user_name+'：</div>'+
+			'</span>' + deleteContent + '</div><div data-id='+treeArr[i].id+' class="hiddenBox"><div class="commenttoWho"><img src='+avatar+'> 我 <span> 回复 </span> '+treeArr[i].user_name+'：</div>'+
 			'<textarea class="replay" autofocus></textarea><button>回复</button></div></li>';
     	}else{
     		// 一级评论的子评论
-    		html += '<li data-id='+treeArr[i].id+' pid='+treeArr[i].pid+'><img src='+'images/logo.png'+'><span class="commentName">'+
+    		html += '<li data-id='+treeArr[i].id+' pid='+treeArr[i].pid+'><img src='+treeArr[i].avatar+'><span class="commentName">'+
 			treeArr[i].user_name+'：</span><span class="commentTime">'
 			+timestampToTime(treeArr[i].create_time)+'</span><br /><div class="commentContent">'+treeArr[i].content+'</div>'+
 			'<div class="miniIcon"><span class="parse data'+treeArr[i].id+'">共 <span class="parseAmount">'+treeArr[i].pares+'</span> 个赞 <i class="iconfont icon-zan"></i>'+
 			'</span><span class="commentSon dataComment'+treeArr[i].id+'">评论 <i class="iconfont icon-pinglun"></i>'+
-			'</span>' + deleteContent + '</div><div data-id='+treeArr[i].id+' class="hiddenBox"><div class="commenttoWho"><img src='+'images/logo.png'+'> 我 <span> 回复 </span> '+treeArr[i].user_name+'：</div>'+
+			'</span>' + deleteContent + '</div><div data-id='+treeArr[i].id+' class="hiddenBox"><div class="commenttoWho"><img src='+avatar+'> 我 <span> 回复 </span> '+treeArr[i].user_name+'：</div>'+
 			'<textarea class="replay" autofocus></textarea><button>回复</button></div></li>';
     	}
     }
@@ -212,10 +215,10 @@ function writeSon(){
     
     var tempIndexParse = {};
     var tempIndexComment = {};
-    	console.log(app.$data.info);
+    	////console.log(app.$data.info);
     for(var i=0;i<app.$data.info.length;i++){
     	var pad = app.$data.info[i].id;
-    	// console.log(pad)
+    	// ////console.log(pad)
     	// 用变量名做变量名
     	tempIndexParse["index"+pad] = true;
     	tempIndexComment["index"+pad] = true;
@@ -235,17 +238,17 @@ function writeSon(){
     				},
     			})
     			.done(function(data) {
-    				console.log(data)
+    				////console.log(data)
     				if(data.code ==0){
     					tempThis.find('.parseAmount').text(data.data.pares);
     					
     				}
     			})
     			.fail(function(err) {
-    				console.log(err);
+    				////console.log(err);
     			})
     			.always(function() {
-    				console.log("complete");
+    				////console.log("complete");
     			});
     			
     			tempIndexParse["index"+pad] = false;
@@ -261,24 +264,24 @@ function writeSon(){
     				},
     			})
     			.done(function(data) {
-    				console.log(data)
+    				////console.log(data)
     				if(data.code ==0){
     					tempThis.find('.parseAmount').text(data.data.pares);
     					
     				}
     			})
     			.fail(function(err) {
-    				console.log(err);
+    				////console.log(err);
     			})
     			.always(function() {
-    				console.log("complete");
+    				////console.log("complete");
     			});
     			tempIndexParse["index"+pad] = true;
     		}
     	})
     	// 评论回复
     	$(".dataComment"+pad).on('click',function(){
-    		console.log(userName)
+    		////console.log(userName)
     		// 判断登录状态
     		if(userName != ""){
 	    		// 显示回复评论的box
@@ -290,7 +293,7 @@ function writeSon(){
 		    			var tempContent = $(this).parent().parent().find(".replay").val();
 		    			var pid = $(this).parent().data('id');
 		    			if(tempContent != ""){
-		    				console.log(tempContent);
+		    				////console.log(tempContent);
 		    				replayComment(tempContent,pid);
 		    			}else{
 		    				layer.open({
@@ -330,7 +333,7 @@ function writeSon(){
 			  			},
 			  		})
 			  		.done(function(data) {
-			  			console.log(data);
+			  			////console.log(data);
 			  			if(data.code == 0){
 							//更新评论数
 							app.$data.comment_count = data.comment_count;
@@ -341,10 +344,10 @@ function writeSon(){
 			  			}
 			  		})
 			  		.fail(function() {
-			  			console.log("error");
+			  			////console.log("error");
 			  		})
 			  		.always(function() {
-			  			console.log("complete");
+			  			////console.log("complete");
 			  		});
 			  		layer.close(index); //如果设定了yes回调，需进行手工关闭
 			  }
@@ -355,6 +358,9 @@ function writeSon(){
 }
 // 评论回复请求
 function replayComment(content,pid){
+	// if(userName == ""{
+
+	// })
 	$.ajax({
 		url: url + '&do=api_posts&op=reply&state=we7sid-' +id ,
 		type: 'POST',
@@ -367,7 +373,7 @@ function replayComment(content,pid){
 		},
 	})
 	.done(function(data) {
-		console.log(data);
+		////console.log(data);
 		//更新评论数
 		app.$data.comment_count = data.comment_count;
 		layer.open({
@@ -383,9 +389,9 @@ function replayComment(content,pid){
 		});
 	})
 	.fail(function(err) {
-		console.log(err);
+		////console.log(err);
 	})
 	.always(function() {
-		console.log("complete");
+		////console.log("complete");
 	});
 }

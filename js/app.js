@@ -1,4 +1,3 @@
-
 function getCookie(c_name){
 	if (document.cookie.length>0){
 		c_start=document.cookie.indexOf(c_name + "=")
@@ -23,7 +22,7 @@ var url = getCookie('url');
 // 起始条数
 var start = 0;
 // 每页条数
-var end = 3;
+var end = 10;
 // 总数
 var amount = 0;
 // 模板
@@ -65,7 +64,7 @@ var moduleInfo = new Vue({
 			},
 		})
 		.done(function(data) {
-			console.log(data)
+			////console.log(data)
 			var info = data.data;
 			if(data.code == 0){
 				// 操作Vue实例里的变量
@@ -73,19 +72,19 @@ var moduleInfo = new Vue({
 					for(var j=0;j<info[i].posts.length;j++){
 						var time = timestampToTime(info[i].posts[j].create_time)
 						// info[i].posts[j][time] = time;
-						// console.log(time)
+						// ////console.log(time)
 						info[i].posts[j].create_time = time;
 					}
 				}
-				// console.log(info[2].posts[0].time)
+				// ////console.log(info[2].posts[0].time)
 				that.infoList = info;
 			}
 		})
 		.fail(function(err) {
-			console.log(err);
+			////console.log(err);
 			// alert("服务器出错啦，请刷新页面！")
 		}).always(function() {
-			console.log("complete");
+			////console.log("complete");
 		});
     }
 })
@@ -105,7 +104,7 @@ var moduleList = new Vue({
 	},
 	methods:{
         hasLogIn(){
-        	console.log(userName);
+        	////console.log(userName);
         	if(userName != ""){
         		// 刷新当前页面
 				window.location.href='articleDetail.html';
@@ -125,7 +124,7 @@ function load(){
 		data: {}
 	})
 	.done(function(data) {
-		console.log(data);
+		////console.log(data);
 		if(data.code == 0){
     		var tempInfo = data.data;
 			// 加载一级分类
@@ -136,25 +135,25 @@ function load(){
 					moduleList.$data.classify = tempArray;
 				}
 			}
-			console.log(moduleList.$data.classify);
+			////console.log(moduleList.$data.classify);
 			// 加载一级分类下的文章列表
 			var tempId = tempArray[0].id;
 			getArticle(tempId);
-			// console.log(tempId);
+			// ////console.log(tempId);
 			moduleList.$data.classId = tempId;
-			console.log(moduleList.$data.classId);
+			////console.log(moduleList.$data.classId);
 		}
 	})
 	.fail(function(err) {
-		console.log(err);
+		////console.log(err);
 		// alert("服务器出错啦，请刷新页面！")
 	})
 	.always(function() {
-		console.log("complete");
+		////console.log("complete");
 	});
 }
 function getArticle(id){
-	console.log(id);
+	////console.log(id);
 	// 请求数据
 	$.ajax({
 		url: "http://192.168.1.105/app/index.php?i=2&c=entry&do=api_posts&m=gengkuai_BBS&op=display2",
@@ -167,14 +166,14 @@ function getArticle(id){
 		},
 	})
 	.done(function(data) {
-		console.log(data);
+		////console.log(data);
 		var info = data.data;
 		if(data.code == 0){
 			amount = data.count;
-			console.log(amount)
+			////console.log(amount)
 		}
 		for(var i=0;i<info.length;i++){
-			// console.log(info[i].create_time);
+			// ////console.log(info[i].create_time);
 			// 判断日期
 			if(info[i].create_time == 0){
 				info[i].create_time = "一个月黑风高的日子";
@@ -188,13 +187,13 @@ function getArticle(id){
 			}
 		}
 		moduleList.$data.infoList = info;
-		console.log(moduleList.$data.infoList);
+		////console.log(moduleList.$data.infoList);
 	})
 	.fail(function(err) {
-		console.log(err);
+		////console.log(err);
 		// alert("服务器出错啦，请刷新页面！")
 	}).always(function() {
-		console.log("complete");
+		////console.log("complete");
 	});
 }
 load();
@@ -215,10 +214,10 @@ setTimeout(function(){
 	$(".contentBlock").first().addClass("contentBlock-active");
 	$(".class_name").first().addClass("class_name_active");
 	$(".content").on("click","li",function(e){
-		console.log(this)
+		////console.log(this)
         $(this).addClass("class_name_active").siblings().removeClass("class_name_active");
         var index = $(this).index();
-        console.log(index)
+        ////console.log(index)
         $(".contentBlock").eq(index).addClass("contentBlock-active").siblings().removeClass("contentBlock-active");
     });
 },500)
@@ -228,7 +227,7 @@ setTimeout(function(){
 	$(".lists").first().addClass("lists_active");
 	$(".listClassify_son").first().addClass("selected");
 	$(".listClassify_son").on("click",function(e){
-		// console.log(this)
+		// ////console.log(this)
         $(this).addClass("selected").siblings().removeClass("selected");
         var index = $(this).index();
         articleIndex = index;
@@ -242,13 +241,13 @@ var d = document.getElementById("contentList").offsetHeight;
 // console.info(d);
 window.addEventListener("scroll", function(event) {
     var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-    // console.log(scrollTop);  
+    // ////console.log(scrollTop);  
     if(document.documentElement.scrollHeight == document.documentElement.clientHeight + scrollTop) {
         // alert("Touch_Buttom!");
-        end += 3;
-        console.log(end)
-        console.log(amount)
-        var dog = amount+3;
+        end += 10;
+        ////console.log(end)
+        ////console.log(amount)
+        var dog = amount+10;
         if(end < dog){
         	// 隐藏底线
         	moduleList.$data.hasBase = false;
